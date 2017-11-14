@@ -25,8 +25,6 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @EnableConfigurationProperties({JpaProperties.class})
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "entityManagerFactory",
-        transactionManagerRef = "transactionManager",
         basePackages = {"studio.limo.web.blog.core"}
 )
 public class BlogDbConfig {
@@ -55,7 +53,7 @@ public class BlogDbConfig {
     )
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("dataSource") DataSource dataSource) {
         logger.debug("create entityManagerFactory");
-        return builder.dataSource(dataSource).packages(new String[]{"studio.limo.web.blog.core"}).properties(this.jpaProperties.getHibernateProperties(dataSource)).build();
+        return builder.dataSource(dataSource).packages("studio.limo.web.blog.core").properties(this.jpaProperties.getHibernateProperties(dataSource)).build();
     }
 
     @Primary
