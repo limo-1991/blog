@@ -16,7 +16,7 @@ import java.util.List;
 @EnableAutoConfiguration
 public class DbTest {
     @Autowired
-    AdminUserDao adminUserDao;
+    private AdminUserDao adminUserDao;
 
     @Test
     public void adminUserDaoTest(){

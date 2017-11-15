@@ -9,6 +9,8 @@
     <version>0.1-SNAPSHOT</version>
     <modules>
         <module>blog-core</module>
+        <module>blog-admin</module>
+        <module>blog-web</module>
     </modules>
 
     <parent>
@@ -37,18 +39,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
-        <!-- JDBC driver for MySQL -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- JDBC driver for SQL Server -->
-        <dependency>
-            <groupId>com.microsoft.sqlserver</groupId>
-            <artifactId>mssql-jdbc</artifactId>
-            <scope>runtime</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -56,5 +46,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>
