@@ -24,6 +24,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>studio.limo.web.blog</groupId>
             <artifactId>blog-core</artifactId>
             <version>0.1-Releases</version>
