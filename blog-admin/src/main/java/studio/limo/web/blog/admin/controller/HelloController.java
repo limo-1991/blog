@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import studio.limo.web.blog.core.dao.AdminUserDao;
+import studio.limo.web.blog.core.dao.UserDao;
 
 
 @Controller
@@ -20,7 +20,7 @@ public class HelloController {
     private Logger logger = LoggerFactory.getLogger(HelloController.class);
 
     @Autowired
-    private AdminUserDao userDao;
+    private UserDao userDao;
 
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String hello(Model model){

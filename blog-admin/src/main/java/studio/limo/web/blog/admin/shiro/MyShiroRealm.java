@@ -8,15 +8,14 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import studio.limo.web.blog.core.bean.AdminUser;
-import studio.limo.web.blog.core.dao.AdminUserDao;
+import studio.limo.web.blog.core.bean.User;
+import studio.limo.web.blog.core.dao.UserDao;
 
 public class MyShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    AdminUserDao adminUserDao;
+    UserDao adminUserDao;
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //        AdminUser adminUser  = (AdminUser) principals.getPrimaryPrincipal();
@@ -32,7 +31,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String account = (String)token.getPrincipal();
-        AdminUser adminUser = adminUserDao.findByAccount(account);
+        User adminUser = adminUserDao.findByAccount(account);
 
         if (adminUser == null){
             return null;
