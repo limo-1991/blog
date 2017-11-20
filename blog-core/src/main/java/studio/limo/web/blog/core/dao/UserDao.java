@@ -10,6 +10,4 @@ import java.util.List;
 public interface UserDao extends PagingAndSortingRepository<User, Long>, QueryByExampleExecutor<User> {
 
     User findByAccount(String account);
-
-    List<User> findByUserGroupOid(Long groupOid);
 }

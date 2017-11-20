@@ -9,13 +9,14 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import studio.limo.web.blog.core.bean.Role;
 import studio.limo.web.blog.core.bean.User;
-import studio.limo.web.blog.core.dao.UserDao;
+import studio.limo.web.blog.core.service.UserService;
 
 public class MyShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    UserDao adminUserDao;
+    UserService userService;
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //        AdminUser adminUser  = (AdminUser) principals.getPrimaryPrincipal();
@@ -25,17 +26,21 @@ public class MyShiroRealm extends AuthorizingRealm {
 //                authorizationInfo.addStringPermission(p.getPermission());
 //            }
 //        }
-        return new SimpleAuthorizationInfo();
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        User user = (User) principals.getPrimaryPrincipal();
+        for (Role role : userService.findRolesByUser(user)){
+            authorizationInfo.addRole(role.getRoleName());
+        }
+        return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String account = (String)token.getPrincipal();
-        User adminUser = adminUserDao.findByAccount(account);
-
-        if (adminUser == null){
+        User user = userService.findByAccount(account);
+        if (user == null){
             return null;
         }
-        return new SimpleAuthenticationInfo(adminUser, adminUser.getPassword(), getName());
+        return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
     }
 }

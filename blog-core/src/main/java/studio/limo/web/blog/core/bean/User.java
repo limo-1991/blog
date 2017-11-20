@@ -5,9 +5,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
-@Table(name = "T_ADMIN_USER")
+@Table(name = "T_USER")
 public class User extends BaseBean {
     private static final long serialVersionUID = 1L;
 
@@ -23,10 +24,6 @@ public class User extends BaseBean {
     @NotEmpty
     @Column(name = "USER_NAME", length = 100, nullable = false)
     private String userName;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_GROUP_OID")
-    private UserGroup userGroup;
 
     public User(){
 
@@ -62,11 +59,4 @@ public class User extends BaseBean {
         this.userName = userName;
     }
 
-    public UserGroup getUserGroup() {
-        return userGroup;
-    }
-
-    public void setUserGroup(UserGroup userGroup) {
-        this.userGroup = userGroup;
-    }
 }

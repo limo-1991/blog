@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import studio.limo.web.blog.core.bean.Role;
 import studio.limo.web.blog.core.bean.User;
+import studio.limo.web.blog.core.dao.RoleDao;
 import studio.limo.web.blog.core.dao.UserDao;
 import studio.limo.web.blog.core.exception.ResourceAlreadyExistException;
 import studio.limo.web.blog.core.exception.ResourceNotFoundException;
@@ -17,7 +19,9 @@ import studio.limo.web.blog.core.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service("userService")
 @Transactional(
@@ -30,6 +34,8 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private RoleDao roleDao;
     public UserServiceImpl(){
 
     }
@@ -41,25 +47,28 @@ public class UserServiceImpl implements UserService{
             user.setAccount("admin");
             user.setPassword("admin");
             user.setUserName("admin");
+
+            Set<Role> roles = new HashSet<>();
+            Role role1 = new Role();
+            role1.setRoleName("admin");
+            role1.setUser(user);
+            roles.add(role1);
+            Role role2 = new Role();
+            role2.setRoleName("init");
+            role2.setUser(user);
+            roles.add(role2);
+
             userDao.save(user);
+            roleDao.save(role1);
+            roleDao.save(role2);
+
+
         }
     }
 
     @Override
     public User findByAccount(String account) {
         return userDao.findByAccount(account);
-    }
-
-    @Override
-    public List<User> findByUserGroupOid(Long groupOid) {
-        return userDao.findByUserGroupOid(groupOid);
-    }
-
-    @Override
-    public Page<User> findByCriteria(User user, Pageable pageable) {
-        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("account", ExampleMatcher.GenericPropertyMatchers.contains());
-
-        return userDao.findAll(Example.of(user, matcher), pageable);
     }
 
     @Transactional(
@@ -110,6 +119,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public void delete(Long id) {
         userDao.delete(id);
+    }
+
+    public List<Role> findRolesByUser(User user){
+       return roleDao.findByUserOid(user.getOid());
     }
 
 }
