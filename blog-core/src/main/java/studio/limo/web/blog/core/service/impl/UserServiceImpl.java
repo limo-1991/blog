@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import studio.limo.web.blog.core.bean.Menu;
+import studio.limo.web.blog.core.bean.Permission;
 import studio.limo.web.blog.core.bean.Role;
 import studio.limo.web.blog.core.bean.User;
+import studio.limo.web.blog.core.dao.MenuDao;
 import studio.limo.web.blog.core.dao.RoleDao;
 import studio.limo.web.blog.core.dao.UserDao;
 import studio.limo.web.blog.core.exception.ResourceAlreadyExistException;
@@ -36,34 +39,43 @@ public class UserServiceImpl implements UserService{
     private UserDao userDao;
 
     @Autowired
-    private RoleDao roleDao;
-    public UserServiceImpl(){
-
-    }
+    private MenuDao menuDao;
 
     @PostConstruct
     public void init(){
         if (!userDao.findAll().iterator().hasNext()){
 
+            Set<Menu> menus = new HashSet<>();
+            Menu menu = new Menu();
+            menu.setCreateDate(DateUtil.getCurrentDate());
+            menu.setName("admin");
+            menu.setHref("/index");
+            menuDao.save(menu);
+            menus.add(menu);
+
+
+
+            Set<Permission> permissions = new HashSet<>();
+            Permission p1 = new Permission();
+            p1.setName("admin");
+            p1.setCreateDate(DateUtil.getCurrentDate());
+            p1.setMenus(menus);
+            permissions.add(p1);
+
             Set<Role> roles = new HashSet<>();
-            Role role1 = new Role();
-            role1.setName("admin");
-            role1.setCreateDate(DateUtil.getCurrentDate());
-            roles.add(role1);
-            Role role2 = new Role();
-            role2.setName("init");
-            role2.setCreateDate(DateUtil.getCurrentDate());
-            roles.add(role2);
+            Role role = new Role();
+            role.setName("admin");
+            role.setCreateDate(DateUtil.getCurrentDate());
+            role.setPermissions(permissions);
+            roles.add(role);
 
             User user = new User();
             user.setAccount("admin");
             user.setPassword("admin");
             user.setUserName("admin");
-            user.setCreateDate(DateUtil.getCurrentDate());
             user.setRoles(roles);
-
-            HashSet<User> users = new HashSet<>();
-            users.add(user);
+            user.setCreateDate(DateUtil.getCurrentDate());
+            userDao.save(user);
 
 
 

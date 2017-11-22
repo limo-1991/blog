@@ -20,11 +20,16 @@ public class Role extends BaseBean{
     private String description;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "USER_ROLE",
+    @JoinTable(name = "T_USER_ROLE",
             joinColumns = {@JoinColumn(name = "ROLE_OID", referencedColumnName = "oid")},
             inverseJoinColumns = {@JoinColumn(name = "USER_OID", referencedColumnName = "oid")})
     private Set<User> users;
 
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "T_ROLE_PERMISSION",
+            joinColumns = {@JoinColumn(name = "ROLE_OID", referencedColumnName = "oid")},
+            inverseJoinColumns = {@JoinColumn(name = "PERMISSION_OID", referencedColumnName = "oid")})
+    private Set<Permission> permissions;
 
     public Role(){
 
@@ -53,5 +58,13 @@ public class Role extends BaseBean{
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 }
