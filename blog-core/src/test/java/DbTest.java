@@ -36,4 +36,10 @@ public class DbTest {
         adminUserDao.delete(adminUser);
         System.out.println("admin user delete!");
     }
+
+    @Test
+    public void test(){
+
+        System.out.println("test");
+    }
 }

@@ -1,4 +1,4 @@
-package studio.limo.web.blog.admin.shiro;
+package studio.limo.web.blog.admin.exception;
 
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,8 +8,17 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
-public class MyHandlerExceptionResolver{
+public class GlobalHandlerExceptionResolver {
 
+
+    /**
+     * 处理Shiro无权限异常
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param o
+     * @param e
+     * @return
+     */
     @ExceptionHandler(value = AuthorizationException.class)
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
         String requestType = httpServletRequest.getHeader("X-Requested-With");

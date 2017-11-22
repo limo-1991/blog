@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Entity
 @Table(name = "T_ROLE")
@@ -12,30 +13,45 @@ public class Role extends BaseBean{
 
     @NotEmpty
     @Size(max = 20)
-    @Column(name = "ROLE_NAME", unique = true, length = 20, nullable = false)
-    private String roleName;
+    @Column(name = "NAME", unique = true, length = 20, nullable = false)
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_OID")
-    private User user;
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "USER_ROLE",
+            joinColumns = {@JoinColumn(name = "ROLE_OID", referencedColumnName = "oid")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_OID", referencedColumnName = "oid")})
+    private Set<User> users;
+
 
     public Role(){
 
     }
 
-    public String getRoleName() {
-        return roleName;
+
+    public String getName() {
+        return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public User getUser() {
-        return user;
+    public String getDescription() {
+        return description;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

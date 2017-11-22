@@ -14,6 +14,12 @@ public class BaseBean implements Serializable{
     )
     protected Long oid;
 
+    @Column(name = "CREATE_DATE", length = 8, nullable = false)
+    protected String createDate;
+
+    @Column(name = "UPDATE_DATE", length = 8)
+    protected String updateDate;
+
     public BaseBean(){
 
     }
@@ -24,5 +30,21 @@ public class BaseBean implements Serializable{
 
     public void setOid(Long oid) {
         this.oid = oid;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 }

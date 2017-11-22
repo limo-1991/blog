@@ -1,8 +1,6 @@
 package studio.limo.web.blog.admin;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
@@ -18,6 +16,11 @@ public class BlogAdminApplication {
         SpringApplication.run(BlogAdminApplication.class);
     }
 
+
+    /**
+     * 配置404页面
+     * @return
+     */
     @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer(){
         return (container ->{

@@ -16,6 +16,7 @@ import studio.limo.web.blog.core.dao.UserDao;
 import studio.limo.web.blog.core.exception.ResourceAlreadyExistException;
 import studio.limo.web.blog.core.exception.ResourceNotFoundException;
 import studio.limo.web.blog.core.service.UserService;
+import studio.limo.web.blog.core.util.DateUtil;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
@@ -43,24 +44,35 @@ public class UserServiceImpl implements UserService{
     @PostConstruct
     public void init(){
         if (!userDao.findAll().iterator().hasNext()){
+
+            Set<Role> roles = new HashSet<>();
+            Role role1 = new Role();
+            role1.setName("admin");
+            role1.setCreateDate(DateUtil.getCurrentDate());
+            roles.add(role1);
+            Role role2 = new Role();
+            role2.setName("init");
+            role2.setCreateDate(DateUtil.getCurrentDate());
+            roles.add(role2);
+
             User user = new User();
             user.setAccount("admin");
             user.setPassword("admin");
             user.setUserName("admin");
+            user.setCreateDate(DateUtil.getCurrentDate());
+            user.setRoles(roles);
 
-            Set<Role> roles = new HashSet<>();
-            Role role1 = new Role();
-            role1.setRoleName("admin");
-            role1.setUser(user);
-            roles.add(role1);
-            Role role2 = new Role();
-            role2.setRoleName("init");
-            role2.setUser(user);
-            roles.add(role2);
+            HashSet<User> users = new HashSet<>();
+            users.add(user);
+
+
+
+
+           // roleDao.save(role1);
+            //roleDao.save(role2);
 
             userDao.save(user);
-            roleDao.save(role1);
-            roleDao.save(role2);
+
 
 
         }
@@ -122,7 +134,7 @@ public class UserServiceImpl implements UserService{
     }
 
     public List<Role> findRolesByUser(User user){
-       return roleDao.findByUserOid(user.getOid());
+        return null;
     }
 
 }

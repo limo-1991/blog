@@ -25,6 +25,16 @@ public class User extends BaseBean {
     @Column(name = "USER_NAME", length = 100, nullable = false)
     private String userName;
 
+
+    @Column(name = "DESCRIPTION")
+    private String description;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "USER_ROLE",
+            joinColumns = {@JoinColumn(name = "USER_OID", referencedColumnName = "oid")},
+            inverseJoinColumns = {@JoinColumn(name = "ROLE_OID", referencedColumnName = "oid")})
+    private Set<Role> roles;
+
     public User(){
 
     }
@@ -59,4 +69,19 @@ public class User extends BaseBean {
         this.userName = userName;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 }
