@@ -1,5 +1,6 @@
 package studio.limo.web.blog.admin.shiro;
 
+import org.apache.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -9,27 +10,28 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import studio.limo.web.blog.core.bean.Permission;
 import studio.limo.web.blog.core.bean.Role;
 import studio.limo.web.blog.core.bean.User;
 import studio.limo.web.blog.core.service.UserService;
 
+import java.util.Set;
+
 public class MyShiroRealm extends AuthorizingRealm {
 
+    private static Logger logger = Logger.getLogger(MyShiroRealm.class);
     @Autowired
     UserService userService;
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        //        AdminUser adminUser  = (AdminUser) principals.getPrimaryPrincipal();
-//        for(SysRole role:userInfo.getRoleList()){
-//            authorizationInfo.addRole(role.getRole());
-//            for(SysPermission p:role.getPermissions()){
-//                authorizationInfo.addStringPermission(p.getPermission());
-//            }
-//        }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         User user = (User) principals.getPrimaryPrincipal();
-        for (Role role : userService.findRolesByUser(user)){
-            authorizationInfo.addRole(role.getRoleName());
+        Set<Role> roles = userService.findByAccount(user.getAccount()).getRoles();
+        for (Role role :roles){
+            authorizationInfo.addRole(role.getName());
+            for (Permission permission:role.getPermissions()){
+                authorizationInfo.addStringPermission(permission.getName());
+            }
         }
         return authorizationInfo;
     }

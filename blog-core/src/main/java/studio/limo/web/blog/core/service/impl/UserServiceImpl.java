@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService{
             Menu menu = new Menu();
             menu.setCreateDate(DateUtil.getCurrentDate());
             menu.setName("管理员管理");
-            menu.setHref("/admin");
+            menu.setHref("menu-admin");
             menu.setPermission(p1);
 
             Menu menu1 = new Menu();
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService{
             Menu menu4 = new Menu();
             menu4.setCreateDate(DateUtil.getCurrentDate());
             menu4.setName("系统管理");
-            menu4.setHref("/system");
+            menu4.setHref("menu-system");
             menu4.setPermission(p1);
 
             Menu menu5 = new Menu();
