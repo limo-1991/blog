@@ -19,13 +19,14 @@ public class Permission extends BaseBean{
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "T_ROLE_PERMISSION",
             joinColumns = {@JoinColumn(name = "PERMISSION_OID", referencedColumnName = "oid")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_OID", referencedColumnName = "oid")})
     private Set<Role> roles;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "permission")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "PERMISSION_OID")
     private Set<Menu> menus;
 
     public String getName() {

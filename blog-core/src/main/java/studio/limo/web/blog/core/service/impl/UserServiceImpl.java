@@ -23,6 +23,7 @@ import studio.limo.web.blog.core.util.DateUtil;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,22 +45,10 @@ public class UserServiceImpl implements UserService{
     @PostConstruct
     public void init(){
         if (!userDao.findAll().iterator().hasNext()){
-
-            Set<Menu> menus = new HashSet<>();
-            Menu menu = new Menu();
-            menu.setCreateDate(DateUtil.getCurrentDate());
-            menu.setName("admin");
-            menu.setHref("/index");
-            menuDao.save(menu);
-            menus.add(menu);
-
-
-
             Set<Permission> permissions = new HashSet<>();
             Permission p1 = new Permission();
             p1.setName("admin");
             p1.setCreateDate(DateUtil.getCurrentDate());
-            p1.setMenus(menus);
             permissions.add(p1);
 
             Set<Role> roles = new HashSet<>();
@@ -77,14 +66,47 @@ public class UserServiceImpl implements UserService{
             user.setCreateDate(DateUtil.getCurrentDate());
             userDao.save(user);
 
+            Menu menu = new Menu();
+            menu.setCreateDate(DateUtil.getCurrentDate());
+            menu.setName("管理员管理");
+            menu.setHref("/admin");
+            menu.setPermission(p1);
+
+            Menu menu1 = new Menu();
+            menu1.setCreateDate(DateUtil.getCurrentDate());
+            menu1.setName("角色管理");
+            menu1.setHref("/admin-role");
+            menu1.setSuperMenu(menu);
+            Menu menu2 = new Menu();
+            menu2.setCreateDate(DateUtil.getCurrentDate());
+            menu2.setName("权限管理");
+            menu2.setHref("/admin-permission");
+            menu2.setSuperMenu(menu);
+            Menu menu3 = new Menu();
+            menu3.setCreateDate(DateUtil.getCurrentDate());
+            menu3.setName("管理员列表");
+            menu3.setHref("/admin-list");
+            menu3.setSuperMenu(menu);
 
 
+            Menu menu4 = new Menu();
+            menu4.setCreateDate(DateUtil.getCurrentDate());
+            menu4.setName("系统管理");
+            menu4.setHref("/system");
+            menu4.setPermission(p1);
 
-           // roleDao.save(role1);
-            //roleDao.save(role2);
+            Menu menu5 = new Menu();
+            menu5.setCreateDate(DateUtil.getCurrentDate());
+            menu5.setName("管理员列表");
+            menu5.setHref("/system-category");
+            menu5.setSuperMenu(menu4);
 
-            userDao.save(user);
-
+            menuDao.save(menu);
+            menuDao.save(menu1);
+            menuDao.save(menu2);
+            menuDao.save(menu3);
+            menuDao.save(menu4);
+            menuDao.save(menu5);
 
 
         }

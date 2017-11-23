@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import studio.limo.web.blog.core.BlogCoreApplication;
+import studio.limo.web.blog.core.bean.Menu;
 import studio.limo.web.blog.core.bean.Permission;
 import studio.limo.web.blog.core.bean.Role;
 import studio.limo.web.blog.core.bean.User;
@@ -12,6 +13,7 @@ import studio.limo.web.blog.core.dao.UserDao;
 import studio.limo.web.blog.core.util.DateUtil;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @RunWith(SpringRunner.class)
@@ -56,6 +58,21 @@ public class DbTest {
     @Test
     public void test(){
 
+        User user = userDao.findOne(1L);
+        System.out.println("USER---->" + user.getUserName());
+        Iterator<Role> iterator = user.getRoles().iterator();
+        while (iterator.hasNext()){
+            Role role = iterator.next();
+            System.out.println("ROLE---->" + role.getName() );
+            /*while (role.getPermissions().iterator().hasNext()){
+                Permission permission = role.getPermissions().iterator().next();
+                System.out.println("PERMISSION---->" + permission.getName());
+               *//* while (permission.getMenus().iterator().hasNext()){
+                    Menu menu = permission.getMenus().iterator().next();
+                    System.out.println("MENU---->" + menu.getName());
+                }*//*
+            }*/
+        }
         System.out.println("test");
     }
 }

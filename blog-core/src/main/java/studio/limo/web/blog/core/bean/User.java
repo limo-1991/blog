@@ -29,7 +29,7 @@ public class User extends BaseBean {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "T_USER_ROLE",
             joinColumns = {@JoinColumn(name = "USER_OID", referencedColumnName = "oid")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_OID", referencedColumnName = "oid")})
