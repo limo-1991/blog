@@ -2,21 +2,22 @@ package studio.limo.web.blog.admin.controller;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import studio.limo.web.blog.core.bean.Menu;
+import studio.limo.web.blog.core.bean.Permission;
+import studio.limo.web.blog.core.bean.Role;
 import studio.limo.web.blog.core.bean.User;
 import studio.limo.web.blog.core.service.UserService;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class IndexController {
@@ -30,24 +31,29 @@ public class IndexController {
     public LoginForm initLoginForm(){
         return new LoginForm();
     }
-
-//    @RequestMapping(value = "{page}.html")
-//    public String index(@PathVariable(name = "page") String page){
-//        return page;
 //
+//    @RequestMapping(value = "article-list.html")
+//    @RequiresRoles("admin")
+//    public String test(){
+//        return "article-list";
 //    }
 
-    @RequestMapping(value = "article-list.html")
-    @RequiresRoles("admin")
-    public String test(){
-        return "article-list";
+    @RequestMapping(value = "welcome",method = RequestMethod.GET)
+    public String welcome(){
+        return "welcome";
     }
 
-    @RequestMapping(value = "index")
+    @RequestMapping(value = "index",method = RequestMethod.GET)
     public String index(Model model){
         Subject currentUser = SecurityUtils.getSubject();
         User user =(User) currentUser.getSession().getAttribute("userInfo");
+        Set<Menu> menus = new HashSet<>();
 
+        for (Permission permission : getPermission(user)){
+            menus.addAll(permission.getMenus());
+        }
+
+        model.addAttribute("menus",menus);
         System.out.println("User:" + user.getOid());
         return "index";
     }
@@ -91,6 +97,14 @@ public class IndexController {
     @RequestMapping(value = "error", method = RequestMethod.GET)
     public String error(){
         return "404";
+    }
+
+    private Set<Permission> getPermission(User user){
+        Set<Permission> permissions = new HashSet<>();
+        for (Role role : user.getRoles()){
+            permissions.addAll(role.getPermissions());
+        }
+        return permissions;
     }
 
 }

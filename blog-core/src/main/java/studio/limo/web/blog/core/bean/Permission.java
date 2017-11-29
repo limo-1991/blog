@@ -13,7 +13,7 @@ public class Permission extends BaseBean{
 
     @NotEmpty
     @Size(max = 20)
-    @Column(name = "NAME",length = 20,nullable = false)
+    @Column(name = "NAME", unique = true, length = 20,nullable = false)
     private String name;
 
     @Column(name = "DESCRIPTION")

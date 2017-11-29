@@ -30,6 +30,13 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
+        <!--Shiro-->
+        <dependency>
+            <groupId>com.github.theborakompanioni</groupId>
+            <artifactId>thymeleaf-extras-shiro</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
         <!-- JDBC driver for MySQL -->
         <dependency>
             <groupId>mysql</groupId>

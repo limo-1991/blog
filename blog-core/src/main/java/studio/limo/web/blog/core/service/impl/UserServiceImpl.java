@@ -23,10 +23,7 @@ import studio.limo.web.blog.core.util.DateUtil;
 
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service("userService")
 @Transactional(
@@ -97,7 +94,7 @@ public class UserServiceImpl implements UserService{
 
             Menu menu5 = new Menu();
             menu5.setCreateDate(DateUtil.getCurrentDate());
-            menu5.setName("管理员列表");
+            menu5.setName("栏目管理");
             menu5.setHref("/system-category");
             menu5.setSuperMenu(menu4);
 
@@ -167,8 +164,13 @@ public class UserServiceImpl implements UserService{
         userDao.delete(id);
     }
 
-    public List<Role> findRolesByUser(User user){
-        return null;
+    @Override
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
+        for (User user: userDao.findAll()){
+            users.add(user);
+        }
+        return users;
     }
 
 }
